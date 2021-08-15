@@ -7,11 +7,13 @@
 <p align="center">
 <a href="https://github.com/Rizky878"><img title="Author" src="https://img.shields.io/badge/Author-Rizky%20Fadilah-red.svg?style=for-the-badge&logo=github"></a>
 </p>
-## kenapa fitur dikit bang?
-* Disini Ku memberikan contoh saja,kalo mau fitur banyak tambah sendiri ya bang hehe
+
 
 
 # TELEGRAM BOT
+## kenapa fitur dikit bang?
+* Disini Ku memberikan contoh saja,kalo mau fitur banyak tambah sendiri ya bang hehe
+
 # Platform 
 ## Untuk Windows Instal Materi Tambahan Di Bawah Ini. Untuk Termux, cukup clone repo ini dan instal seperti contoh di bawah ini 
  
