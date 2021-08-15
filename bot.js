@@ -1,4 +1,4 @@
-//Base By Rizky Fadilah
+//Kalo Error lapor goblok malah ngeluh
 //creator Rizky Fadilah
 //thanks to ...gada yang bantu wkwk
 
@@ -14,7 +14,7 @@ const chalk = require('chalk')
 const spin = require('spinnies')
 const cfonts = require('cfonts')
 const fs = require('fs')
-const Bot_Token = '1800004047:AAHD6EMxPgAG4K2M21gW92B0KOHOi0D8fJs' //Example '18009294047:AAhhsEMxPgAGoKaoJs21gW92B0KOHOi0kdksJs'
+const Bot_Token = 'TOKEN_BOT' //Example '18009294047:AAhhsEMxPgAGoKaoJs21gW92B0KOHOi0kdksJs'
 const util = require('util')
 const transllate = require('@vitalets/google-translate-api')
 const afk = JSON.parse(fs.readFileSync('./afk.json'))
@@ -140,18 +140,6 @@ minute: 'numeric',
 second: 'numeric'
 })
 if (Bot_Token == "TOKEN BOT") {
-console.log(chalk.cyanBright("################### TOKEN BOT KOSONG ###################"))
-console.log(chalk.cyanBright("################### TOKEN BOT KOSONG ###################"))
-console.log(chalk.cyanBright("################### TOKEN BOT KOSONG ###################"))
-console.log(chalk.cyanBright("################### TOKEN BOT KOSONG ###################"))
-console.log(chalk.cyanBright("################### TOKEN BOT KOSONG ###################"))
-console.log(chalk.cyanBright("################### TOKEN BOT KOSONG ###################"))
-console.log(chalk.cyanBright("################### TOKEN BOT KOSONG ###################"))
-console.log(chalk.cyanBright("################### TOKEN BOT KOSONG ###################"))
-console.log(chalk.cyanBright("################### TOKEN BOT KOSONG ###################"))
-console.log(chalk.cyanBright("################### TOKEN BOT KOSONG ###################"))
-console.log(chalk.cyanBright("################### TOKEN BOT KOSONG ###################"))
-console.log(chalk.cyanBright("################### TOKEN BOT KOSONG ###################"))
 console.log(chalk.cyanBright("################### TOKEN BOT KOSONG ###################"))
 console.log(chalk.cyanBright("################### TOKEN BOT KOSONG ###################"))
 return console.log(chalk.cyanBright("################### TOKEN BOT KOSONG ###################"))
@@ -884,7 +872,6 @@ return
 }
 switch (command) {
 case 'afk':
-if(isGroup) return reply('Gunakan Perintah ini di chat pribadi')
 alasan = args.join(" ")
 afk.push('@'+name.username)
 fs.writeFileSync('./afk.json', JSON.stringify(afk))
@@ -907,6 +894,7 @@ try {
 iky.reply(`Error: ${e}`)
 }
 default:
+//Fitur Simi
 if(!isGroup && !isCmd && !isMedia) {
 await iky.replyWithChatAction("typing")
 simi = await toJson(`https://fdciabdul.tech/api/ayla/?pesan=${q}`)
