@@ -1,6 +1,4 @@
 //Kalo Error lapor goblok malah ngeluh
-//creator Rizky Fadilah
-//thanks to ...gada yang bantu wkwk
 
 /**********Tq Udah make************/
 
