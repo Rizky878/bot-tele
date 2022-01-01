@@ -15,7 +15,7 @@ const fs = require('fs')
 const Bot_Token = 'TOKEN BOT' //Example '18009294047:AAhhsEMxPgAGoKaoJs21gW92B0KOHOi0kdksJs'
 const util = require('util')
 const transllate = require('@vitalets/google-translate-api')
-const afk = JSON.parse(fs.readFileSync('./afk.json'))
+const afk = JSON.parse(fs.readFileSync('./lib/json/afk.json'))
 const updateLogger = require('telegraf-update-logger');
 const banner = cfonts.render(('Rizky Fadilah|Bot Telegram'), {
 font: 'chrome',
@@ -55,7 +55,7 @@ spins.add(id, {text: text})
 const { 
 y2mateA,
 y2mateV
-} = require('./y2mate.js')
+} = require('./scraper/y2mate.js')
 const yts = require('yt-search')
 const toJson = (url, options) => new Promise(async (resolve, reject) => {
 fetch(url, options)
