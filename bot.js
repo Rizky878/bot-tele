@@ -141,7 +141,6 @@ Sukses('2', 'Connecting...')
 setTimeout( () => {
 success('2', 'Connected')
 console.log(chalk.whiteBright('[ BOT STARTED ]'))
-bot.telegram.sendMessage('1367169799','Bot Joined The username '+bot.botInfo.username)
 }, 3000)
 
 
@@ -800,7 +799,7 @@ console.log(e)
 iky.replyWithChatAction("upload_audio")
 })
 } catch (e) {
-bot.telegram.sendMessage('1367169799','Err :'+require('util').format(e))
+console.log(e)
 }
 break
 case 'ping': case 'p':
@@ -874,8 +873,9 @@ terus += `NOMOR: ${i}
 • Link Video : ${res.all[i].url}`
 }
 iky.replyWithPhoto({url: res.all[0].thumbnail}, {caption:terus})
-} catch {
+} catch(e){
 iky.reply(`Pastikan judul sudah benar!`)
+console.log(e)
 }
 }
 break
@@ -892,7 +892,6 @@ filename: qe+'.jpg'
 })}).catch(e => console.log(e))
 } catch (e) {
 	console.log(e)
-bot.telegram.sendMessage('1367169799','Err :'+require('util').format(e))
 }
 break
 case 'ytmp4':
@@ -915,7 +914,6 @@ iky.replyWithChatAction("upload_video")
 })
 } catch (e) {
 	console.log(e)
-bot.telegram.sendMessage('1367169799','Err :'+require('util').format(e))
 }
 break
 case 'play':
@@ -950,7 +948,6 @@ filename: tes[0].output
 }).catch(e => iky.reply('error silahkan cari lagu lain'))
 } catch (e) {
 	console.log(e)
-bot.telegram.sendMessage('1367169799','Err :'+require('util').format(e))
 }
 break
 case 'pussy':
