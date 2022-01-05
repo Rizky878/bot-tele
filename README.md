@@ -35,6 +35,7 @@
 
 ## Edit token bot
 get bot token at [`@BotFather`](http://t.me/BotFather).
+<a href="https://github.com/Rizky878/bot-tele/blob/1dd58010d7c92eea734e26f60d808cdb6bca1bf2/json/config.json#L15">Edit disini</a>
 ```json
 { 
    "Bot_Token" : "TOKEN BOT" //Ganti Dengan Token Bot Telegram Mu!
