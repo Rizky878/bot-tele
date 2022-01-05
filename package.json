@@ -17,6 +17,8 @@
     "chalk": "^4.1.1",
     "moment-timezone": "^0.5.33",
     "nekos.life": "^2.0.7",
+"delay" : "latest",
+"util" : "latest",
     "nodemon": "^2.0.7",
     "performance-now": "^2.1.0",
     "pino": "^6.13.4",
