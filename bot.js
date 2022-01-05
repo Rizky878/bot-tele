@@ -137,7 +137,7 @@ resize_keyboard: true
 })
 
 bot.hears('Creator', ctx => {
-bot.telegram.sendMessage(ctx.chat.id, 'Bot ini dibuat oleh '+ config.ownerusername ' / ' config.ownername,{
+bot.telegram.sendMessage(ctx.chat.id, 'Bot ini dibuat oleh '+ config.ownerusername +' / '+ config.ownername,{
 reply_markup: {
 inline_keyboard:[
 [
