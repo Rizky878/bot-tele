@@ -1,5 +1,5 @@
 <p align="center">
-<img src="https://telegra.ph/file/c17202bf4a21e83931fed.jpg" width="478" height="374.3373493975904" alt="Anime Pout GIF - Anime Pout Hmph GIFs" style="max-width: 478px; background-color: rgb(63, 63, 63);">
+<img src="https://telegra.ph/file/c17202bf4a21e83931fed.jpg" alt="Anime" style="max-width: 478px; background-color: rgb(63, 63, 63);">
 </p>
 <p align="center">
 <a href="#"><img title="TELEGRAM BOT" src="https://img.shields.io/badge/Base Bot Telegram-yellow?colorA=%23ff0000&colorB=%23017e40&style=for-the-badge"></a>
