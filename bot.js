@@ -103,7 +103,6 @@ Sukses('2', 'Connecting...')
 setTimeout( () => {
 success('2', 'Connected')
 console.log(chalk.whiteBright('[ BOT STARTED ]'))
-bot.telegram.sendMessage('1367169799','Bot Joined The username '+bot.botInfo.username)
 }, 3000)
 
 
@@ -134,7 +133,7 @@ resize_keyboard: true
 })
 
 bot.hears('Creator', ctx => {
-bot.telegram.sendMessage(ctx.chat.id, 'Bot ini dibuat oleh @Rizky9788',{
+bot.telegram.sendMessage(ctx.chat.id, `Bot ini dibuat oleh @${config.ownerusername}`,{
 reply_markup: {
 inline_keyboard:[
 [
@@ -331,7 +330,7 @@ filename: 'kitten.jpg'
 })
 bot.action(config.ownerusername, ctx => {
 ctx.deleteMessage()
-bot.telegram.sendMessage(ctx.chat.id, config.ownerusername+' itu ownerku',
+bot.telegram.sendMessage(ctx.chat.id, '@'+config.ownerusername+' itu ownerku',
 {
 reply_markup: {
 inline_keyboard: [
