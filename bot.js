@@ -25,8 +25,7 @@ const simi = JSON.parse(fs.readFileSync('./json/simi.json'))
 const updateLogger = require('telegraf-update-logger')
 const { sendVideo, banner,success, Sukses, GetFotoProfile, pushname, gmt, weton, week, date, waktu, toJson,isUrl, range, argsGet } = require('./lib/functions')
 const { sendProses, format, sendText, sendsearch, sendDonation, sendHelp, sendStart, sendTest, getPosition } = require('./lib/log')
-const fig = JSON.parse(fs.readFileSync('./json/config.json'))
-global.config = fig[0]
+global.config = JSON.parse(fs.readFileSync('./json/config.json'))
 global.l = pino(config.pino)
 const parseResult = async(json, options = {}) => {
     let {arrow,head,upper,down,line } = config.unicode
