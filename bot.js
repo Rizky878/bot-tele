@@ -25,8 +25,10 @@ const simi = JSON.parse(fs.readFileSync('./json/simi.json'))
 const updateLogger = require('telegraf-update-logger')
 const { sendVideo, banner,success, Sukses, GetFotoProfile, pushname, gmt, weton, week, date, waktu, toJson,isUrl, range, argsGet } = require('./lib/functions')
 const { sendProses, format, sendText, sendsearch, sendDonation, sendHelp, sendStart, sendTest, getPosition } = require('./lib/log')
+
 global.config = JSON.parse(fs.readFileSync('./json/config.json'))
 global.l = pino(config.pino)
+
 const parseResult = async(json, options = {}) => {
     let {arrow,head,upper,down,line } = config.unicode
     let opts = {
@@ -34,7 +36,7 @@ const parseResult = async(json, options = {}) => {
       ignoreVal: [null,
         undefined],
       ignoreKey: [],
-      title: 'IkyyBott',
+      title: config.botname,
       headers: `${head}${line.repeat(4)}${arrow} » %title «`,
       body: `➜ %key : %value`,
       footer: head+line+line+line+arrow+'\n',...options,
@@ -59,18 +61,17 @@ const parseResult = async(json, options = {}) => {
         default:
           tmp.push([key, val]);
           break;
- }}
+        }
+      }
     if (unicode) {
       let text = [headers.replace(/%title/g, title),tmp.map((v) => {return body.replace(/%key/g, v[0]).replace(/%value/g, v[1]);}).join('\n'),footer,];
       return text.join('\n').trim();
     }
     return tmp;
-  }
-const {
-y2mateA,
-y2mateV
-} = require('./scraper/y2mate.js')
-const yts = require('yt-search')
+  };
+
+  const { y2mateA, y2mateV } = require('./scraper/y2mate.js')
+  const yts = require('yt-search')
 
 if (config.Bot_Token == "TOKEN BOT" || config.Bot_Token == "") return console.log(new Error('ENGLISH\n\nBot token is required, get token in telegram @BotFather and create bot\n if you dont understand, please contact via WhatsApp 6282387804410\n\nINDONESIA\n\n Bot Token Diperlukan token bot, dapatkan token di telegram @BotFather dan buat bot\n jika Anda tidak mengerti, silakan hubungi melalui WhatsApp 6282387804410'))
 console.log(chalk.blue('Connected to token : ')+' '+config.BotToken)
