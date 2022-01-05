@@ -1,4 +1,4 @@
-{
+[{
   "pino": {
     "safe": true,
     "name": "platform",
@@ -33,4 +33,4 @@
     ]
   },
   "BotToken": "TOKEN BOT" 
-}
+}]
