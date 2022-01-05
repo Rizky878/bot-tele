@@ -175,7 +175,7 @@ resize_keyboard: true
 })
 
 bot.hears('Creator', ctx => {
-bot.telegram.sendMessage(ctx.chat.id, 'Bot ini dibuat oleh @Rizky9788 / Rizky Fadilah',{
+bot.telegram.sendMessage(ctx.chat.id, 'Bot ini dibuat oleh '+ config.ownerusername ' / ' config.ownername,{
 reply_markup: {
 inline_keyboard:[
 [
@@ -370,7 +370,7 @@ url: paq.url,
 filename: 'kitten.jpg'
 },{caption: 'Pedo yh bg 🤨📸'})
 })
-bot.action('rizky', ctx => {
+bot.action(config.ownerusername, ctx => {
 ctx.deleteMessage()
 bot.telegram.sendMessage(ctx.chat.id, config.ownerusername+' itu ownerku',
 {
