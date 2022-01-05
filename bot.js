@@ -1,3 +1,6 @@
+//Base By Rizky Fadilah
+//creator Rizky Fadilah
+//thanks to ...gada yang bantu wkwk
 
 const { Telegraf } = require('telegraf')
 const fetch = require('node-fetch')
@@ -20,35 +23,73 @@ const transllate = require('@vitalets/google-translate-api')
 const afk = JSON.parse(fs.readFileSync('./json/afk.json'))
 const simi = JSON.parse(fs.readFileSync('./json/simi.json'))
 const updateLogger = require('telegraf-update-logger')
-const { parseResult, sendVideo, banner,success, Sukses, GetFotoProfile, pushname, gmt, weton, week, date, waktu, toJson,isUrl, range, argsGet } = require('./lib/functions')
+const { sendVideo, banner,success, Sukses, GetFotoProfile, pushname, gmt, weton, week, date, waktu, toJson,isUrl, range, argsGet } = require('./lib/functions')
 const { sendProses, format, sendText, sendsearch, sendDonation, sendHelp, sendStart, sendTest, getPosition } = require('./lib/log')
+const fig = JSON.parse(fs.readFileSync('./json/config.json'))
+global.config = fig[0]
+global.l = pino(config.pino)
+const parseResult = async(json, options = {}) => {
+    let {arrow,head,upper,down,line } = config.unicode
+    let opts = {
+      unicode: true,
+      ignoreVal: [null,
+        undefined],
+      ignoreKey: [],
+      title: 'IkyyBott',
+      headers: `${head}${line.repeat(4)}${arrow} » %title «`,
+      body: `➜ %key : %value`,
+      footer: head+line+line+line+arrow+'\n',...options,
+    };
+    let {unicode,ignoreKey,title,headers,ignoreVal,body,footer} = opts;
+    let obj = Object.entries(json);
+    let tmp = [];
+    for (let [_key, val] of obj) {
+      if (ignoreVal.indexOf(val) !== -1) continue;
+      let key = _key[0].toUpperCase() + _key.slice(1);
+      let type = typeof val;
+      if (ignoreKey && ignoreKey.includes(_key)) continue;
+      switch (type) {
+        case 'boolean':
+          tmp.push([key, val ? 'Ya': 'Tidak']);
+          break;
+        case 'object':
+          if (Array.isArray(val)) {
+            tmp.push([key, val.join(', ')]);
+          } else {tmp.push([key,parseResult(val, {ignoreKey, unicode: false}), ]);}
+          break;
+        default:
+          tmp.push([key, val]);
+          break;
+ }}
+    if (unicode) {
+      let text = [headers.replace(/%title/g, title),tmp.map((v) => {return body.replace(/%key/g, v[0]).replace(/%value/g, v[1]);}).join('\n'),footer,];
+      return text.join('\n').trim();
+    }
+    return tmp;
+  }
+const {
+y2mateA,
+y2mateV
+} = require('./scraper/y2mate.js')
+const yts = require('yt-search')
 
-  global.config = JSON.parse(fs.readFileSync('./json/config.json'))
-  global.l = pino(config.pino)
-  global.bot = new Telegraf(config.BotToken)
-
-  const { y2mateA, y2mateV } = require('./scraper/y2mate.js')
-  const yts = require('yt-search')
-
-  if (config.Bot_Token == "TOKEN BOT" || config.Bot_Token == "") return console.log(new Error('ENGLISH\n\nBot token is required, get token in telegram @BotFather and create bot\n if you dont understand, please contact via WhatsApp 6282387804410\n\nINDONESIA\n\n Bot Token Diperlukan token bot, dapatkan token di telegram @BotFather dan buat bot\n jika Anda tidak mengerti, silakan hubungi melalui WhatsApp 6282387804410'))
-  console.log(chalk.blue('Connected to token : ')+' '+config.BotToken)
+if (config.Bot_Token == "TOKEN BOT" || config.Bot_Token == "") return console.log(new Error('ENGLISH\n\nBot token is required, get token in telegram @BotFather and create bot\n if you dont understand, please contact via WhatsApp 6282387804410\n\nINDONESIA\n\n Bot Token Diperlukan token bot, dapatkan token di telegram @BotFather dan buat bot\n jika Anda tidak mengerti, silakan hubungi melalui WhatsApp 6282387804410'))
+console.log(chalk.blue('Connected to token : ')+' '+config.BotToken)
 /*console.log(chalk.cyanBright("################### TOKEN BOT KOSONG ###################\n"))
 }
 return
 }*/
-  bot.catch((err) => {
-    l.error('Ooops', err);
-  });
-
-  const univ = config.unicode.head;
-  const error = `https://telegra.ph/file/4ab397f49255b2a79f687.jpg`;
-  const uptime = process.uptime();
-  const timestamp = speed();
-  const latensi = speed() - timestamp;
-  const tutid = moment().millisecond();
-  
+global.bot = new Telegraf(config.BotToken)
+bot.catch((err) => {
+  l.error('Ooops', err)
+})
+const univ = config.unicode.head
+const error = `https://telegra.ph/file/4ab397f49255b2a79f687.jpg`
+const uptime = process.uptime();
+const timestamp = speed();
+const latensi = speed() - timestamp
+const tutid = moment().millisecond()
 //welcome and leave
-
 bot.on("new_chat_members", async(iky) => {
  var message = iky.message
  var groupname = message.chat.title
@@ -103,6 +144,7 @@ Sukses('2', 'Connecting...')
 setTimeout( () => {
 success('2', 'Connected')
 console.log(chalk.whiteBright('[ BOT STARTED ]'))
+bot.telegram.sendMessage('1367169799','Bot Joined The username '+bot.botInfo.username)
 }, 3000)
 
 
@@ -133,7 +175,7 @@ resize_keyboard: true
 })
 
 bot.hears('Creator', ctx => {
-bot.telegram.sendMessage(ctx.chat.id, `Bot ini dibuat oleh @${config.ownerusername}`,{
+bot.telegram.sendMessage(ctx.chat.id, 'Bot ini dibuat oleh @Rizky9788 / Rizky Fadilah',{
 reply_markup: {
 inline_keyboard:[
 [
@@ -328,9 +370,9 @@ url: paq.url,
 filename: 'kitten.jpg'
 },{caption: 'Pedo yh bg 🤨📸'})
 })
-bot.action(config.ownerusername, ctx => {
+bot.action('rizky', ctx => {
 ctx.deleteMessage()
-bot.telegram.sendMessage(ctx.chat.id, '@'+config.ownerusername+' itu ownerku',
+bot.telegram.sendMessage(ctx.chat.id, config.ownerusername+' itu ownerku',
 {
 reply_markup: {
 inline_keyboard: [
