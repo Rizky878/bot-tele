@@ -11,9 +11,6 @@
 
 
 # TELEGRAM BOT
-## kenapa fitur dikit bang?
-* Disini Ku memberikan contoh saja,kalo mau fitur banyak tambah sendiri ya bang hehe
-
 # Platform 
 ## Untuk Windows Instal Materi Tambahan Di Bawah Ini. Untuk Termux, cukup clone repo ini dan instal seperti contoh di bawah ini 
  
@@ -38,7 +35,7 @@ get bot token at [`@BotFather`](http://t.me/BotFather).
 <a href="https://github.com/Rizky878/bot-tele/blob/1dd58010d7c92eea734e26f60d808cdb6bca1bf2/json/config.json#L15">Edit disini</a>
 ```json
 { 
-   "Bot_Token" : "TOKEN BOT" //Ganti Dengan Token Bot Telegram Mu!
+   "BotToken" : "TOKEN BOT" //Ganti Dengan Token Bot Telegram Mu!
 }
 ```
 
@@ -48,7 +45,7 @@ get bot token at [`@BotFather`](http://t.me/BotFather).
 ```
 
 # Demo 
-* [`IkyyBot`](https://t.me/Rzkyyybot) (Jarang On!)
+* [`IkyyBot`](https://t.me/Rzkyyybot)
 
 ## Note:
 * You can request a case in my [`WhatsApp`](http://wa.me/6282387804410).
@@ -56,8 +53,8 @@ get bot token at [`@BotFather`](http://t.me/BotFather).
 # Thanks To
 * [`Telegraf`](https://github.com/telegraf/telegraf)
 * [`Pais`](https://github.com/Paiiss)
-* [`Doyatama Code (Guru)`](https://youtube.com/channel/UCctNhbMwbMs-5bdfuQv1aXg)
-* [`Rizky Fadilah`](https://wa.me/6282387804410)
+* [`Doyatama Code`](https://youtube.com/channel/UCctNhbMwbMs-5bdfuQv1aXg)
+* [`Rzky`](https://wa.me/6282387804410)
 
 # Donate
 * [`Pulsa`] (6285364937006)(Telkomsel)
