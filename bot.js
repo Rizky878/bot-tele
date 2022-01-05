@@ -1,6 +1,3 @@
-//Base By Rizky Fadilah
-//creator Rizky Fadilah
-//thanks to ...gada yang bantu wkwk
 
 const { Telegraf } = require('telegraf')
 const fetch = require('node-fetch')
