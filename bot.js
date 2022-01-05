@@ -1,3 +1,6 @@
+//Base By Rizky Fadilah
+//creator Rizky Fadilah
+//thanks to ...gada yang bantu wkwk
 
 const { Telegraf } = require('telegraf')
 const fetch = require('node-fetch')
@@ -25,7 +28,6 @@ const { sendProses, format, sendText, sendsearch, sendDonation, sendHelp, sendSt
 const fig = JSON.parse(fs.readFileSync('./json/config.json'))
 global.config = fig[0]
 global.l = pino(config.pino)
-//by Galang Zobin
 const parseResult = async(json, options = {}) => {
     let {arrow,head,upper,down,line } = config.unicode
     let opts = {
@@ -65,8 +67,6 @@ const parseResult = async(json, options = {}) => {
     }
     return tmp;
   }
-/*-*-*-**-*-*-*-*-**-*-*-*-*-*-**-*/
-
 const {
 y2mateA,
 y2mateV
@@ -124,7 +124,9 @@ ${univ} Nama: ${full_name}
 ${univ} Bot : ${message.left_chat_member.is_bot}`, parse_mode: "Markdown" })
  
  })
- 
+ const monoscape = (text) => {
+ 	return '`'+text+'`'
+ }
  
  //Logs
 bot.use(
@@ -234,7 +236,6 @@ const tmenu = `
   Penggunaan RAM : ${(process.memoryUsage().heapUsed / 1024 / 1024).toFixed(2)}MB / ${Math.round(require(`os`).totalmem / 1024 / 1024)}MB
  
  Ping : ${tutid}MS
- Runtime : ${format(uptime)}
  Speed : ${latensi.toFixed(4)} Second
 
  ` 
@@ -371,7 +372,7 @@ filename: 'kitten.jpg'
 })
 bot.action('rizky', ctx => {
 ctx.deleteMessage()
-bot.telegram.sendMessage(ctx.chat.id, '@Rizky9788 itu ownerku',
+bot.telegram.sendMessage(ctx.chat.id, config.ownerusername+' itu ownerku',
 {
 reply_markup: {
 inline_keyboard: [
@@ -460,23 +461,11 @@ sendStart(bot,ctx)
 bot.help((ctx) => {
 sendHelp(bot,ctx)
 })
-
-bot.action('tiktokaudio', async (ctx) =>{
-	
-	anus = tik.find(g => g.id == ctx.chat.id)
-	if(anus== undefined) return
-	buff = await toJson(`https://api.rzkyfdlh.tech/downloader/tiktok?link=${anus.url}`)
-	sendsearch(bot,ctx)
-	
-	
-	tik.splice(getPosition(ctx.chat.id, 1),1)
-ctx.replyWithChatAction("upload_audio")
-ctx.replyWithAudio({
-url: buff.metaData.audio_original,
-filename: buff.musicMeta.musicName+'.mp3'
-
-})
-})
+bot.action('star', async(iky) => {
+	iky.deleteMessage()
+	if (iky.chat.type.includes("group")) return bot.telegram.sendMessage(iky.chat.id,`Perintah Ini hanya Bisa Digunakan Chat Pribadi!`)
+     bot.telegram.sendMessage(iky.chat.id, 'Jika Ingin memakai Anonymous chat\nSilahkan ketik \n/star untuk memulai\n/next untuk mencari partner baru\n/leave untuk berhenti')
+            })
 /*_*_*_*_*_*_*_* END ACTION *_*_*_*_*_*_*_*/
 
 
@@ -496,6 +485,7 @@ const OwnerId = [`${config.ownerusername}`]
 const qe = args.join(' ')
 const from = iky.chat.id
 const sender = name.username
+const sender2 = iky.message.from.id
 const isOwner = OwnerId.includes(name.username)
 
 const reply = async(text) => {
@@ -541,8 +531,12 @@ inline_keyboard: [    //EXAMPLE -- custom(from,`Hai` , [{text: 'button 1' , call
 parse_mode: "Markdown",
 disable_web_page_preview: "true" })}
 
+const reply2 = (text) => {
+ bot.telegram.sendMessage(from,text,{parse_mode: "Markdown"})
+}
 const getLink = async(file_id) => { try { return (await bot.telegram.getFileLink(file_id)).href } catch { throw "Error while get url" } }
 const isImage = iky.message.hasOwnProperty("photo")
+const isText = iky.message.hasOwnProperty("text")
 const isVideo = iky.message.hasOwnProperty("video")
 const isAudio = iky.message.hasOwnProperty("audio")
 const isSticker = iky.message.hasOwnProperty("sticker")
@@ -566,13 +560,41 @@ if (isQuoted) {
             file_id = isQuotedImage ? iky.message.reply_to_message.photo[iky.message.reply_to_message.photo.length - 1].file_id :
                 isQuotedVideo ? iky.message.reply_to_message.video.file_id :
                 isQuotedAudio ? iky.message.reply_to_message.audio.file_id :
+                isQuotedSticker ? iky.message.reply_to_message.sticker.file_id :
                 isQuotedDocument ? iky.message.reply_to_message.document.file_id :
                 isQuotedAnimation ? iky.message.reply_to_message.animation.file_id : ""
+        } else {
+file_id = isImage ? iky.message.photo[iky.message.photo.length - 1].file_id :
+                isVideo ? iky.message.video.file_id :
+                isAudio ? iky.message.audio.file_id :
+                isDocument ? iky.message.document.file_id :
+                isSticker ? iky.message.sticker.file_id :
+                isAnimation ? iky.message.animation.file_id : ""
         }
         var mediaLink = file_id != "" ? await getLink(file_id) : ""
 const isCmd = q.startsWith(awalan)
 const isGroup = iky.chat.type.includes("group")
+const isPrivate = iky.chat.type.includes("private")
 const groupName = isGroup ? iky.chat.title : ""
+
+//anonymous
+this.anonymous = this.anonymous ? this.anonymous : {}
+if (!isGroup && !isCmd) {
+    let rm = Object.values(this.anonymous).find(room => [room.c, room.b].includes(sender2) && room.state === 'CHATTING')
+    if (rm) {
+        let other = [rm.c, rm.b].find(user => user !== sender2)
+        
+  isImage ? bot.telegram.sendPhoto(other,{url: mediaLink},{caption: q ? q : ''}) : 
+isSticker ? bot.telegram.sendSticker(other,{url: mediaLink}) :
+ isDocument ? bot.telegram.sendDocument(other,{url: mediaLink,filename: iky.message.document.file_name}) :
+ isAnimation ? bot.telegram.sendAnimation(other,{url: mediaLink}) :
+ isVideo ? bot.telegram.sendVideo(other, {url: mediaLink, filename: iky.message.video.file_name}) :
+ isAudio ? bot.telegram.sendAudio(other,{url: mediaLink,filename: iky.message.audio.file_name}) :
+ isLocation ? bot.telegram.sendLocation(other,iky.message.location.latitude,iky.message.location.longitude) :
+isText ? bot.telegram.sendMessage(other, q,{parse_mode: "Markdown"}) : ''
+    }
+    }
+
 if (afk.includes(q)) {
 ini_txt = "Maaf user yang anda tag sedang afk. "
 reply(ini_txt)
@@ -623,6 +645,62 @@ disable_web_page_preview: "true" })
 	iky.reply(`tidak ditemukan`)
 	}
 break
+case 'leave': 
+if (!isPrivate) return reply(`Perintah Ini hanya Bisa Digunakan Chat Pribadi!`)
+let reme = Object.values(this.anonymous).find(room => room.check(sender2))
+ if (!reme) {
+ bot.telegram.sendMessage(from, `Kamu tidak sedang berada di anonymous chat`)
+ return
+ }
+ bot.telegram.sendMessage(from, `Berhasil Meninggalkan chat`)
+ delete this.anonymous[reme.id]
+ let erh = reme.other(sender2)
+ if (erh) {
+ bot.telegram.sendMessage(erh, `Partner memberhentikan chat`)
+ }
+break
+        case 'next': 
+        	if (!isPrivate) return reply(`Perintah Ini hanya Bisa Digunakan Chat Pribadi!`)
+            let rom = Object.values(this.anonymous).find(room => room.check(sender2))
+            if (!rom) {
+ bot.telegram.sendMessage(from,`Kamu tidak sedang berada di anonymous chat`)
+ return
+}
+            let other = rom.other(sender2)
+            if (other) {
+            bot.telegram.sendMessage(other,`Partner memberhentikan chat`)
+ }
+            delete this.anonymous[rom.id]
+            
+        case 'star':
+        	if (!isPrivate) return reply(`Perintah Ini hanya Bisa Digunakan Chat Pribadi!`)
+            if (Object.values(this.anonymous).find(room => room.check(sender2))) return reply( 'Kamu masih berada di dalam anonymous chat')
+            let room = Object.values(this.anonymous).find(room => room.state === 'WAITING' && !room.check(sender2))
+            if (room) {
+            bot.telegram.sendMessage(room.c,`Menemukan partner!\nSilahkan memulai chat`,{parse_mode: 'Markdown'})
+               // iky.sendMessage(room.c, 'Menemukan partner!\nSilahkan memulai chat', MessageType.text)
+                room.b = sender2
+                room.state = 'CHATTING'
+               // m.reply('Menemukan partner!\nsilahkan memulai chat')
+                bot.telegram.sendMessage(from, `Menemukan partner!\nSilahkan memulai chat`)
+            } else {
+                let ifd = + new Date
+                this.anonymous[ifd] = {
+                    id: ifd,
+                    c: sender2,
+                    b: '',
+                    state: 'WAITING',
+                    check: function (who = '') {
+                        return [this.c, this.b].includes(who)
+                    },
+                    other: function (who = '') {
+                        return who === this.c ? this.b : who === this.b ? this.c : ''
+                    },
+                }
+                reply2('`Mohon Tunggu Sebentar sedang mencari partner`')
+                
+            }
+            break
 case 'afk':
 if(!isGroup) return reply('Gunakan Perintah ini di group')
 alasan = args.join(" ")
@@ -701,7 +779,6 @@ parse_mode: "html"
 })
 break
 case 'quotes':
-iky.deleteMessage()
 sendsearch(bot,iky)
 buff = await toJson('https://api.rzkyfdlh.tech/randomtext/quotes')
 bot.telegram.sendMessage(from, buff.result.quotes+'\n\nBy: '+buff.result.author,{reply_markup: {inline_keyboard: [[{text: 'Get Again', callback_data: 'quotes'}]]},parse_mode: "Markdown",disable_web_page_preview: "true" })
@@ -941,7 +1018,7 @@ reply('Sukses Menghidupkan Simsimi')
 break
 
 default:
-if(!isGroup && !isCmd && !isMedia) {
+/*if(!isGroup && !isCmd && !isMedia) {
 if(simi.includes(sender)) return
 await iky.replyWithChatAction("typing")
 anu = await toJson(`https://api.simsimi.net/v2/?text=${q}&lc=id`)
@@ -950,7 +1027,7 @@ anu = await toJson(`https://api.simsimi.net/v2/?text=${q}&lc=id`)
 	simirep(`${simsi.replace('Jawaban untuk ini adalah dilarang','aku dilarang untuk berkata kasar sama ownerku kak maaf ya').replace('Tiara',name.username).replace(/simi/gi,'Kurumi').replace(/Jangan berkata kasar!!!dong/gi,'Bacot kontol sok kata kasar loe '+name.username).replace(/bangchan/gi,'Rizky Fadilah').replace(/simsimi/gi,'Kurumi').replace(/please enter the text - text=hello/gi,`Ada apa kak ${name.username}`).replace(/Aku tidak mengerti apa yang kamu katakan.Tolong ajari aku./gi,'Maaf Kurumi tidak paham 😔')}`)
 console.log(chalk.whiteBright(""), chalk.cyanBright("[ SIMI ]"), chalk.whiteBright(q), chalk.greenBright("from"), chalk.whiteBright(name.username))
 console.log(chalk.whiteBright(""), chalk.cyanBright("[ BOT ]"), chalk.whiteBright(simsi.replace('Jawaban untuk ini adalah dilarang','aku dilarang untuk berkata kasar sama ownerku(Rizky) kak maaf ya').replace('Tiara',name.username).replace(/simi/gi,'Kurumi').replace(/Jangan berkata kasar!!!dong/gi,'Bacot kontol sok kata kasar loe '+name.username).replace(/bangchan/gi,'Rizky Fadilah').replace(/simsimi/gi,'Kurumi').replace(/please enter the text - text=hello/gi,`Ada apa kak ${name.username}`).replace(/Aku tidak mengerti apa yang kamu katakan.Tolong ajari aku./gi,'Maaf Kurumi tidak paham 😔')), chalk.greenBright("from"), chalk.whiteBright(user.username))
-}
+}*/ //simsimi
 }
 } catch(e) {
 console.log(e)
