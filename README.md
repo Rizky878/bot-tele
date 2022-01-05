@@ -55,6 +55,8 @@ get bot token at [`@BotFather`](http://t.me/BotFather).
 * [`Pais`](https://github.com/Paiiss)
 * [`Doyatama Code`](https://youtube.com/channel/UCctNhbMwbMs-5bdfuQv1aXg)
 * [`Rzky`](https://wa.me/6282387804410)
+* [`Zobin`](https://github.com/Zobin33)
+* [`Manxtodd`](https://github.com/Manxtodd)
 
 # Donate
 * [`Pulsa`] (6285364937006)(Telkomsel)
