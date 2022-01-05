@@ -1,6 +1,3 @@
-//Base By Rizky Fadilah
-//creator Rizky Fadilah
-//thanks to ...gada yang bantu wkwk
 
 const { Telegraf } = require('telegraf')
 const fetch = require('node-fetch')
@@ -28,6 +25,7 @@ const { sendProses, format, sendText, sendsearch, sendDonation, sendHelp, sendSt
 const fig = JSON.parse(fs.readFileSync('./json/config.json'))
 global.config = fig[0]
 global.l = pino(config.pino)
+//by Galang Zobin
 const parseResult = async(json, options = {}) => {
     let {arrow,head,upper,down,line } = config.unicode
     let opts = {
@@ -67,6 +65,8 @@ const parseResult = async(json, options = {}) => {
     }
     return tmp;
   }
+/*-*-*-**-*-*-*-*-**-*-*-*-*-*-**-*/
+
 const {
 y2mateA,
 y2mateV
