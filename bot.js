@@ -10,6 +10,7 @@ const spin = require('spinnies')
 const cfonts = require('cfonts')
 const delay = require('delay')
 const fs = require('fs')
+const ms = require ('ms')
 let tik = [];
 let music = [];
 const pino = require('pino')
@@ -19,8 +20,9 @@ const util = require('util')
 const transllate = require('@vitalets/google-translate-api')
 const afk = JSON.parse(fs.readFileSync('./json/afk.json'))
 const simi = JSON.parse(fs.readFileSync('./json/simi.json'))
+const ban = JSON.parse(fs.readFileSync('./json/ban.json'))
 const updateLogger = require('telegraf-update-logger')
-const { sendVideo, banner,success, Sukses, GetFotoProfile, pushname, gmt, weton, week, date, waktu, toJson,isUrl, range, argsGet } = require('./lib/functions')
+const { sendVideo,cekStatus, banner,success, Sukses, GetFotoProfile, pushname, gmt, weton, week, date, waktu, toJson,isUrl, range, argsGet } = require('./lib/functions')
 const { sendProses, format, sendText, sendsearch, sendDonation, sendHelp, sendStart, sendTest, getPosition } = require('./lib/log')
 const fig = JSON.parse(fs.readFileSync('./json/config.json'))
 global.config = fig[0]
@@ -76,10 +78,16 @@ console.log(chalk.blue('Connected to token : ')+' '+config.BotToken)
 }
 return
 }*/
+
 global.bot = new Telegraf(config.BotToken)
 bot.catch((err) => {
   l.error('Ooops', err)
 })
+const cekBan = async(ctx) => {
+aw = getPosition(ban, await ctx.message.from.id)
+return aw
+}
+
 const univ = config.unicode.head
 const error = `https://telegra.ph/file/4ab397f49255b2a79f687.jpg`
 const uptime = process.uptime();
@@ -145,8 +153,19 @@ console.log(chalk.whiteBright('[ BOT STARTED ]'))
 
 
 /*+*+*+*+*+*+*+*+* ACTION *+*+*+*+*+*+*+*+*+*+*/
-
-
+const cekWaktuBan = (_dir) => {
+setInterval(() => {
+let position = null
+Object.keys(_dir).forEach((i) => {
+if (Date.now() >= _dir[i].time) {
+position = i
+}
+})
+if (position !== null) {
+ bot.telegram.sendMessage(_dir[position].id, '*Mute* Kamu sudah dibuka\n*Mohon jangan spam lagi!*\n\nMending ngobrol² di group [`RzkyyyBot`](https://t.me/+cV7x1HKVr6UxNTA1)',{parse_mode: "Markdown"})
+_dir.splice(getPosition(ban, _dir[position].id), 1)}
+}, 1000)
+}
 bot.action('info', ctx =>{
 ctx.deleteMessage()
 bot.telegram.sendMessage(ctx.chat.id,` Info Bot ${bot.botInfo.username}
@@ -171,6 +190,8 @@ resize_keyboard: true
 })
 
 bot.hears('Creator', ctx => {
+
+if(cekStatus(ctx.message.from.id, ban)) return
 bot.telegram.sendMessage(ctx.chat.id, 'Bot ini dibuat oleh @Rizky9788 / Rizky Fadilah',{
 reply_markup: {
 inline_keyboard:[
@@ -183,6 +204,8 @@ parse_mode: "Markdown"
  })
 });
 bot.hears('Source', ctx => {
+
+if(cekStatus(ctx.message.from.id, ban)) return
 bot.telegram.sendMessage(ctx.chat.id,'Source: https://github.com/Rizky878/bot-tele',{
 reply_markup: {
 inline_keyboard:[
@@ -196,6 +219,8 @@ parse_mode: "Markdown"
 });
 
 bot.hears('Hilangkan keyboard', ctx => {
+
+if(cekStatus(ctx.message.from.id, ban)) return
 bot.telegram.sendMessage(ctx.chat.id, "Keyboard dihilangkan", 
 {
 reply_markup: {
@@ -204,7 +229,9 @@ remove_keyboard: true
 })
 })
 bot.action('afk',(ctx) => {
-	ctx.deleteMessage()
+
+if(cekStatus(ctx.message.from.id, ban)) return
+ctx.deleteMessage()
 if(!ctx.chat.type.includes("group")) {
 bot.telegram.sendMessage(ctx.chat.id, 'Perintah ini hanya dapat digunakan dalam group',{
 reply_markup: {
@@ -248,6 +275,8 @@ parse_mode: "Markdown"
  })
 })
 bot.action('pinterest', ctx => {
+
+if(cekStatus(ctx.message.from.id, ban)) return
 ctx.deleteMessage()
  bot.telegram.sendMessage(ctx.chat.id, 'Silahkan ketik /pinterest nama foto \ncontoh: /pinterest ayam',
  {
@@ -263,6 +292,8 @@ disable_web_page_preview: "true"
  })
 })
 bot.action('ytmp3', ctx => {
+
+if(cekStatus(ctx.message.from.id, ban)) return
 ctx.deleteMessage()
  bot.telegram.sendMessage(ctx.chat.id, 'Silahkan ketik /ytmp3 link YouTube \ncontoh: /ytmp3 https://youtu.be/ST5v7-C3iDk ',
  {
@@ -278,6 +309,8 @@ disable_web_page_preview: "true"
  })
 })
 bot.action('ytmp4', ctx => {
+
+if(cekStatus(ctx.message.from.id, ban)) return
 ctx.deleteMessage()
  bot.telegram.sendMessage(ctx.chat.id, 'Silahkan ketik /ytmp4 link YouTube \ncontoh: /ytmp4 https://youtu.be/ST5v7-C3iDk',
  {
@@ -293,6 +326,8 @@ disable_web_page_preview: "true"
  })
 })
 bot.action('ytsearch', ctx => {
+
+if(cekStatus(ctx.message.from.id, ban)) return
 ctx.deleteMessage()
  bot.telegram.sendMessage(ctx.chat.id, 'Silahkan ketik /ytsearch judul \ncontoh: /ytsearch ayam ',
  {
@@ -308,56 +343,51 @@ disable_web_page_preview: "true"
  })
 })
 bot.action('downloadermenu', ctx => {
+
+if(cekStatus(ctx.message.from.id, ban)) return
 ctx.deleteMessage()
  sendText(bot,ctx,downloadermenu)
 })
 bot.action('nsfwmenu', ctx => {
+
+if(cekStatus(ctx.message.from.id, ban)) return
 ctx.deleteMessage()
  sendText(bot,ctx,nsfwmenu)
 })
 bot.action('funmenu', ctx => {
+
+if(cekStatus(ctx.message.from.id, ban)) return
 ctx.deleteMessage()
  sendText(bot,ctx,funmenu)
 })
 bot.action('searchmenu', ctx => {
+
+if(cekStatus(ctx.message.from.id, ban)) return
 ctx.deleteMessage()
  sendText(bot,ctx,searchmenu)
 })
 bot.action('randomenu', ctx => {
+
+if(cekStatus(ctx.message.from.id, ban)) return
 ctx.deleteMessage()
  sendText(bot,ctx,randommenu)
 })
-bot.action('play', ctx => {
+bot.action('groupmenu', ctx => {
+
+if(cekStatus(ctx.message.from.id, ban)) return
 ctx.deleteMessage()
- bot.telegram.sendMessage(ctx.chat.id, 'Silahkan ketik /play nama lagu \ncontoh: /play surat cinta untuk starla ',
- {
-reply_markup: {
-inline_keyboard: [
- [
-{ text: 'Back', callback_data: 'start'}
- ]
-]
-},
-parse_mode: "Markdown",
-disable_web_page_preview: "true" 
- })
+sendText(bot,ctx,groupmenu)
 })
-bot.action('ig', ctx => {
+bot.action('adminmenu', ctx => {
+
+if(cekStatus(ctx.message.from.id, ban)) return
 ctx.deleteMessage()
- bot.telegram.sendMessage(ctx.chat.id, 'Silahkan ketik /instagram link \ncontoh: /instagram https://www.instagram.com/p/CREqfvJirTd/?utmmedium=copylink ',
- {
-reply_markup: {
-inline_keyboard: [
- [
-{ text: 'Back', callback_data: 'start'}
- ]
-]
-},
-parse_mode: "Markdown",
-disable_web_page_preview: "true" 
- })
+sendText(bot,ctx,adminmenu)
 })
+
 bot.action('loli', async(ctx) => {
+
+if(cekStatus(ctx.message.from.id, ban)) return
 ctx.deleteMessage()
 ctx.reply('mencari')
 paq = await toJson(`https://api.rzkyfdlh.tech/loli`)
@@ -367,6 +397,8 @@ filename: 'kitten.jpg'
 },{caption: 'Pedo yh bg 🤨📸'})
 })
 bot.action('rizky', ctx => {
+
+if(cekStatus(ctx.message.from.id, ban)) return
 ctx.deleteMessage()
 bot.telegram.sendMessage(ctx.chat.id, config.ownerusername+' itu ownerku',
 {
@@ -383,10 +415,11 @@ disable_web_page_preview: "true"
  
 })
 bot.action('yt3', async(iky) =>{
+
+if(cekStatus(iky.message.from.id, ban)) return
 iky.deleteMessage()
 try {
-	
-	url = music.find(g => g.id == iky.chat.id)
+url = music.find(g => g.id == iky.chat.id)
 //return console.log(iky.chat.id)
 y2mateA(url.url).then((tes) => {
 console.log(tes)
@@ -409,10 +442,14 @@ iky.replyWithChatAction("upload_audio")
 }
 })
 bot.action('donasi', (ctx) =>{
+
+if(cekStatus(ctx.message.from.id, ban)) return
 sendDonation(bot,ctx)
 })
 bot.action('yt4', (iky) =>{
-	iky.deleteMessage()
+
+if(cekStatus(iky.message.from.id, ban)) return
+iky.deleteMessage()
 try {
 	url = music.find(g => g.id == iky.chat.id)
 y2mateV(url.url).then((tes) => {
@@ -421,7 +458,7 @@ iky.replyWithPhoto({
 url: tes[0].thumb,
 filename: tes[0].judul+'.jpg'
 },{caption: `「 YOUTUBE MP4 」\n\n• Judul : ${tes[0].judul}\n• Size : ${tes[0].size}\n\nMohon Tunggu sebentar video sedang dikirim`})
-music.splice(getPosition(music, iky.chat.id),1)
+music.splice(getPosition(iky.chat.id, music),1)
 iky.replyWithVideo({
 url: tes[0].link,
 filename: tes[0].output
@@ -435,37 +472,50 @@ iky.replyWithChatAction("upload_video")
 }
 })
 bot.action('start', async(ctx) =>{
+
+if(cekStatus(ctx.message.from.id, ban)) return
 sendStart(bot,ctx)
 })
 bot.action('quotes', async(ctx) =>{
+
+if(cekStatus(ctx.message.from.id, ban)) return
 ctx.deleteMessage()
 sendsearch(bot,ctx)
 buff = await toJson('https://api.rzkyfdlh.tech/randomtext/quotes')
 bot.telegram.sendMessage(ctx.chat.id, buff.result.quotes+'\n\nBy: '+buff.result.author,{reply_markup: {inline_keyboard: [[{text: 'Get Again', callback_data: 'quotes'}]]},parse_mode: "Markdown",disable_web_page_preview: "true" })
 	})
 bot.action(['help','menu'], (ctx) =>{
+
 sendHelp(bot,ctx)
 })
 bot.action('simioff', (ctx) =>{
-	ctx.deleteMessage()
+
+if(cekStatus(ctx.message.from.id, ban)) return
+ctx.deleteMessage()
 sendText(bot,ctx ,'/simioff <mematikan fitur simsimi>\n/simion <menghidupkan mode simsimi>')
 })
 bot.start(async(ctx) => {
+
+if(cekStatus(ctx.message.from.id, ban)) return
 sendStart(bot,ctx)
 })
 bot.help((ctx) => {
+
+if(cekStatus(ctx.message.from.id, ban)) return
 sendHelp(bot,ctx)
 })
 bot.action('star', async(iky) => {
-	iky.deleteMessage()
-	if (iky.chat.type.includes("group")) return bot.telegram.sendMessage(iky.chat.id,`Perintah Ini hanya Bisa Digunakan Chat Pribadi!`)
-     bot.telegram.sendMessage(iky.chat.id, 'Jika Ingin memakai Anonymous chat\nSilahkan ketik \n/star untuk memulai\n/next untuk mencari partner baru\n/leave untuk berhenti')
-            })
+
+if(cekStatus(iky.message.from.id, ban)) return
+iky.deleteMessage()
+if (iky.chat.type.includes("group")) return bot.telegram.sendMessage(iky.chat.id,`Perintah Ini hanya Bisa Digunakan Chat Pribadi!`)
+bot.telegram.sendMessage(iky.chat.id, 'Jika Ingin memakai Anonymous chat\nSilahkan ketik \n/star untuk memulai\n/next untuk mencari partner baru\n/leave untuk berhenti')
+})
 /*_*_*_*_*_*_*_* END ACTION *_*_*_*_*_*_*_*/
 
 
-
-
+this.anonymous = this.anonymous ? this.anonymous : {}
+this.spam = this.spam ? this.spam : {}
 /*-*-*-*-*-*-*- CASE -*-*-*-*-*-*-*/
 bot.on('message', async(iky) => {
 try {
@@ -481,7 +531,7 @@ const from = iky.chat.id
 const sender = name.username
 const sender2 = iky.message.from.id
 const isOwner = OwnerId.includes(name.username)
-
+if(cekStatus(iky.message.from.id, ban)) return console.log('ban')
 const reply = async(text) => {
 bot.telegram.sendMessage(iky.chat.id, text,
 {
@@ -554,6 +604,7 @@ const isQuotedDocument = Quoted.hasOwnProperty("document")
 const isQuotedAnimation = Quoted.hasOwnProperty("animation")
 const isQuoted = iky.message.hasOwnProperty("reply_to_message")
 var file_id = ""
+cekWaktuBan(ban)
 if (isQuoted) {
             file_id = isQuotedImage ? iky.message.reply_to_message.photo[iky.message.reply_to_message.photo.length - 1].file_id :
                 isQuotedVideo ? iky.message.reply_to_message.video.file_id :
@@ -580,7 +631,7 @@ for(let i of cekadmin) {
 	}
 const isAdmin = isGroup ? admin.includes(sender2) : false
 //anonymous
-this.anonymous = this.anonymous ? this.anonymous : {}
+
 if (!isGroup && !isCmd) {
     let rm = Object.values(this.anonymous).find(room => [room.c, room.b].includes(sender2) && room.state === 'CHATTING')
     if (rm) {
@@ -596,6 +647,26 @@ isSticker ? bot.telegram.sendSticker(other,{url: mediaLink},) :
 isText ? bot.telegram.sendMessage(other, q,{parse_mode: "Markdown"}) : ''
     }
     }
+if (sender in this.spam) {
+this.spam[sender].count++
+if (iky.message.date - this.spam[sender].totalspam > 5) {
+if (this.spam[sender].count > 5) {
+if(isGroup) {
+reply2('*Terdeteksi '+sender+' Spam kamu akan dimute selama 10 menit*')
+bot.telegram.banChatMember(from,sender2,{until_date: Date.now() + ms("10m")})
+this.spam[sender].count = 0
+this.spam[sender].totalspam = iky.message.date
+return
+}
+reply2('*Terdeteksi '+sender+' Spam kamu akan dimute selama 10 menit*')
+ban.push({id: sender2,time: Date.now()+ms('10m')})
+fs.writeFileSync('./json/ban.json',JSON.stringify(ban))
+}
+this.spam[sender].count = 0
+this.spam[sender].totalspam = iky.message.date
+}
+} else this.spam[sender] = {jid: sender,count: 0,totalspam: 0
+        }
 
 if (afk.includes(q)) {
 ini_txt = "Maaf user yang anda tag sedang afk. "
@@ -611,6 +682,15 @@ return
 }
 
 switch (command) {
+case 'delete': case 'del': case 'd':
+if(!isQuoted) return reply2(monoscape(`Reply pesan bot`))
+if(!iky.message.reply_to_message.from.username == bot.botInfo.username) return reply2(monoscape(`Hanya dapat menghapus pesan dari bot ${bot.botInfo.username}`))
+try {
+iky.deleteMessage(iky.message.reply_to_message.message_id)
+} catch {
+	reply2('gagal')
+	}
+break
 case 'pin':
 if(!isGroup && !isAdmin ) return reply2('`Khusus Admin and group`')
 if(!isQuoted) return reply(`reply pesan yang ingin dipin`)
