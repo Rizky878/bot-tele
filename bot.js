@@ -1,3 +1,4 @@
+
 const { Telegraf } = require('telegraf')
 const fetch = require('node-fetch')
 const moment = require('moment-timezone')
@@ -404,7 +405,7 @@ console.log(e)
 iky.replyWithChatAction("upload_audio")
 })
 } catch (e) {
-bot.telegram.sendMessage('1367169799','Err :'+require('util').format(e))
+	console.log(e)
 }
 })
 bot.action('donasi', (ctx) =>{
@@ -431,11 +432,10 @@ iky.replyWithChatAction("upload_video")
 })
 } catch (e) {
 	console.log(e)
-bot.telegram.sendMessage('1367169799','Err :'+require('util').format(e))
 }
 })
 bot.action('start', async(ctx) =>{
-sendHelp(bot,ctx)
+sendStart(bot,ctx)
 })
 bot.action('quotes', async(ctx) =>{
 ctx.deleteMessage()
@@ -472,8 +472,7 @@ try {
 awalan = '/'
 if(iky.message.from.is_bot) return
 const q = iky.message.text || iky.message.caption || ''
-
-const command = q.slice(1).trim().split(" ").shift().toLowerCase()
+const command = q.slice(1).trim().replace("@"+bot.botInfo.username,'').split(" ").shift().toLowerCase()
 const args = await argsGet(iky)
 const name = pushname(iky.message.from) 
 const OwnerId = [`${config.ownerusername}`]
@@ -486,6 +485,7 @@ const isOwner = OwnerId.includes(name.username)
 const reply = async(text) => {
 bot.telegram.sendMessage(iky.chat.id, text,
 {
+	reply_to_message_id: iky.message.message_id,
 reply_markup: {
 inline_keyboard: [
  [
@@ -527,8 +527,11 @@ parse_mode: "Markdown",
 disable_web_page_preview: "true" })}
 
 const reply2 = (text) => {
- bot.telegram.sendMessage(from,text,{parse_mode: "Markdown"})
+ bot.telegram.sendMessage(from,text,{parse_mode: 'Markdown',reply_to_message_id: iky.message.message_id})
 }
+let admin = [];
+
+
 const getLink = async(file_id) => { try { return (await bot.telegram.getFileLink(file_id)).href } catch { throw "Error while get url" } }
 const isImage = iky.message.hasOwnProperty("photo")
 const isText = iky.message.hasOwnProperty("text")
@@ -571,7 +574,11 @@ const isCmd = q.startsWith(awalan)
 const isGroup = iky.chat.type.includes("group")
 const isPrivate = iky.chat.type.includes("private")
 const groupName = isGroup ? iky.chat.title : ""
-
+const cekadmin = isGroup ? await bot.telegram.getChatAdministrators(from) : ''
+for(let i of cekadmin) {
+	admin.push(i.user.id)
+	}
+const isAdmin = isGroup ? admin.includes(sender2) : false
 //anonymous
 this.anonymous = this.anonymous ? this.anonymous : {}
 if (!isGroup && !isCmd) {
@@ -580,11 +587,11 @@ if (!isGroup && !isCmd) {
         let other = [rm.c, rm.b].find(user => user !== sender2)
         
   isImage ? bot.telegram.sendPhoto(other,{url: mediaLink},{caption: q ? q : ''}) : 
-isSticker ? bot.telegram.sendSticker(other,{url: mediaLink}) :
+isSticker ? bot.telegram.sendSticker(other,{url: mediaLink},) :
  isDocument ? bot.telegram.sendDocument(other,{url: mediaLink,filename: iky.message.document.file_name}) :
- isAnimation ? bot.telegram.sendAnimation(other,{url: mediaLink}) :
- isVideo ? bot.telegram.sendVideo(other, {url: mediaLink, filename: iky.message.video.file_name}) :
- isAudio ? bot.telegram.sendAudio(other,{url: mediaLink,filename: iky.message.audio.file_name}) :
+ isAnimation ? bot.telegram.sendAnimation(other,{url: mediaLink},) :
+ isVideo ? bot.telegram.sendVideo(other, {url: mediaLink, filename: iky.message.video.file_name},) :
+ isAudio ? bot.telegram.sendAudio(other,{url: mediaLink,filename: iky.message.audio.file_name},) :
  isLocation ? bot.telegram.sendLocation(other,iky.message.location.latitude,iky.message.location.longitude) :
 isText ? bot.telegram.sendMessage(other, q,{parse_mode: "Markdown"}) : ''
     }
@@ -604,6 +611,15 @@ return
 }
 
 switch (command) {
+case 'pin':
+if(!isGroup && !isAdmin ) return reply2('`Khusus Admin and group`')
+if(!isQuoted) return reply(`reply pesan yang ingin dipin`)
+bot.telegram.pinChatMessage(from,iky.message.reply_to_message.message_id)
+reply2(monoscape(`Sukses Pin pesan`))
+break
+case 'caristicker':
+as = await bot.telegram.getStickerSet(qe)
+
 case '>':
 if(!isOwner) return 
 iky.reply('Excuting '+qe)
@@ -613,6 +629,37 @@ try {
 } catch(e) {
 iky.reply(`Error: ${e}`)
 }
+break
+case 'cekadmin': case 'admin':
+ad = await bot.telegram.getChatAdministrators(from)
+an = '*INFO ADMIN GROUP '+groupName+'*\n\n'
+for ( let i of ad){
+an += `Username: @${i.user.username}\n`
+an += `Status: ${i.status}\n`
+if(i.status == 'administrator') {
+an += `Edit Group? *${i.can_be_edited ? 'Boleh' : 'Dilarang'}*
+`
+an += `Edit Chat? *${i.can_manage_chat ? 'Boleh' : 'Dilarang'}*
+`
+an += `Ganti Info Group? *${i.can_change_info ? 'Boleh' : 'Dilarang'}*
+`
+an += `Hapus Pesan member? *${i.can_delete_messages ? 'Boleh' : 'Dilarang'}*
+`
+an += `Undang Orang? *${i.can_invite_users ? 'Boleh' : 'Dilarang'}*
+`
+an += `Blockir Member? *${i.can_restrict_members ? 'Boleh' : 'Dilarang'}*
+`
+an += `Pin Pesan? *${i.can_pin_messages ? 'Boleh' : 'Dilarang'}*
+`
+an += `Promote Member? *${i.can_promote_members ? 'Boleh' : 'Dilarang'}*
+`
+an += `Kelola obrolan video? *${i.can_manage_voice_chats ? 'Boleh' : 'Dilarang'}*
+\n\n`
+} else {
+an += `*Pemilik Group Bebas melakukan apa pun*\n`
+}
+}
+reply2(an)
 break
 case 'whatmusic':
 try {
@@ -658,7 +705,7 @@ break
         	if (!isPrivate) return reply(`Perintah Ini hanya Bisa Digunakan Chat Pribadi!`)
             let rom = Object.values(this.anonymous).find(room => room.check(sender2))
             if (!rom) {
- bot.telegram.sendMessage(from,`Kamu tidak sedang berada di anonymous chat`)
+ bot.telegram.sendMessage(from,`Kamu tidak sedang berada di anonymous chat`,{reply_to_message_id: iky.message.message_id})
  return
 }
             let other = rom.other(sender2)
@@ -677,7 +724,7 @@ break
                 room.b = sender2
                 room.state = 'CHATTING'
                // m.reply('Menemukan partner!\nsilahkan memulai chat')
-                bot.telegram.sendMessage(from, `Menemukan partner!\nSilahkan memulai chat`)
+                bot.telegram.sendMessage(from, `Menemukan partner!\nSilahkan memulai chat`,{reply_to_message_id: iky.message.message_id})
             } else {
                 let ifd = + new Date
                 this.anonymous[ifd] = {
@@ -743,7 +790,7 @@ paq = await toJson(`https://api.rzkyfdlh.tech/loli`)
 iky.replyWithPhoto({
 url: paq.url,
 filename: 'kitten.jpg'
-},{caption: 'Pedo yh bg 🤨📸'})
+},{caption: 'Pedo yh bg 🤨📸',reply_to_message_id: iky.message.message_id})
 break
 case 'donasi':
 sendDonation(bot,iky)
@@ -758,6 +805,7 @@ bot.telegram.sendMessage(from,` Info Bot ${bot.botInfo.username}
 - First Nama : - ${bot.botInfo.first_name} -
 - Apakah Bot boleh di add ke group? - ${bot.botInfo.can_join_groups ? 'Diperbolehkan' : 'Tidak diperbolehkan'} -
 - Apakah bot read chat group? - ${bot.botInfo.can_read_all_group_messages ? 'Iya' : 'Tidak'} -`, {
+reply_to_message_id: iky.message.message_id,
 reply_markup: {
 keyboard: [
 [
@@ -776,7 +824,7 @@ break
 case 'quotes':
 sendsearch(bot,iky)
 buff = await toJson('https://api.rzkyfdlh.tech/randomtext/quotes')
-bot.telegram.sendMessage(from, buff.result.quotes+'\n\nBy: '+buff.result.author,{reply_markup: {inline_keyboard: [[{text: 'Get Again', callback_data: 'quotes'}]]},parse_mode: "Markdown",disable_web_page_preview: "true" })
+bot.telegram.sendMessage(from, buff.result.quotes+'\n\nBy: '+buff.result.author,{reply_to_message_id: iky.message.message_id,reply_markup: {inline_keyboard: [[{text: 'Get Again', callback_data: 'quotes'}]]},parse_mode: "Markdown",disable_web_page_preview: "true" })
 break
 case 'ytmp3':
 if(!isUrl(qe) && !qe.includes('youtu')) return iky.reply('Link Invalid')
@@ -788,11 +836,11 @@ iky.replyWithChatAction("upload_photo")
 iky.replyWithPhoto({
 url: tes[0].thumb,
 filename: tes[0].judul+'.jpg'
-},{caption: `「 YOUTUBE MP3 」\n\n• Judul : ${tes[0].judul}\n• Size : ${tes[0].size}\n\nMohon Tunggu sebentar lagu sedang dikirim`})
+},{caption: `「 YOUTUBE MP3 」\n\n• Judul : ${tes[0].judul}\n• Size : ${tes[0].size}\n\nMohon Tunggu sebentar lagu sedang dikirim`,reply_to_message_id: iky.message.message_id})
 iky.replyWithAudio({
 url: tes[0].link,
 filename: tes[0].output
-}).catch(e => { iky.reply('Link Invalid')
+},{reply_to_message_id: iky.message.message_id}).catch(e => { iky.reply('Link Invalid')
 console.log(e)
 })
 iky.replyWithChatAction("upload_audio")
@@ -811,6 +859,7 @@ const tmenu = `Host : _${os.hostname()}_
  Speed : ${latensi.toFixed(4)} Second` 
 bot.telegram.sendMessage(iky.chat.id, tmenu ,
 {
+	reply_to_message_id: iky.message.message_id,
 reply_markup: {
 inline_keyboard:[
 [
@@ -836,7 +885,7 @@ iky.replyWithChatAction("upload_photo")
 iky.replyWithPhoto({
 url: i,
 filename: 'iky.jpg'
-})
+},{reply_to_message_id: iky.message.message_id})
 } else {
 iky.replyWithChatAction("upload_video")
 sendVideo(iky,i,Date.now()+'.mp4',`Sukses`)
@@ -862,19 +911,18 @@ terus = '❒ 「 YOUTUBE SEARCH」\n\n'
 res = await yts(`${qe}`)
 for (let i = 0; i < 5; i++) {
 terus += `NOMOR: ${i}
-• Judul${res.all[i].title}
-• ID Video${res.all[i].videoId}
-• Views${res.all[i].views}
-• Di Upload Pada${res.all[i].ago}
-• Durasi${res.all[i].timestamp}
-• Channel${res.all[i].author.name}
+• Judul : ${res.all[i].title}
+• ID Video : ${res.all[i].videoId}
+• Views : ${res.all[i].views}
+• Di Upload Pada : ${res.all[i].ago}
+• Durasi : ${res.all[i].timestamp}
+• Channel : ${res.all[i].author.name}
 • Link Channel : ${res.all[i].author.url}
 • Link Video : ${res.all[i].url}`
 }
-iky.replyWithPhoto({url: res.all[0].thumbnail}, {caption:terus})
-} catch(e){
+bot.telegram.sendMessage(from,terus)
+} catch {
 iky.reply(`Pastikan judul sudah benar!`)
-console.log(e)
 }
 }
 break
@@ -888,7 +936,7 @@ paq = json[pa]
 iky.replyWithPhoto({
 url: paq,
 filename: qe+'.jpg'
-})}).catch(e => console.log(e))
+},{reply_to_message_id: iky.message.message_id})}).catch(e => console.log(e))
 } catch (e) {
 	console.log(e)
 }
@@ -902,11 +950,11 @@ console.log(tes)
 iky.replyWithPhoto({
 url: tes[0].thumb,
 filename: tes[0].judul+'.jpg'
-},{caption: `「 YOUTUBE MP4 」\n\n• Judul : ${tes[0].judul}\n• Size : ${tes[0].size}\n\nMohon Tunggu sebentar video sedang dikirim`})
+},{caption: `「 YOUTUBE MP4 」\n\n• Judul : ${tes[0].judul}\n• Size : ${tes[0].size}\n\nMohon Tunggu sebentar video sedang dikirim`,reply_to_message_id: iky.message.message_id})
 iky.replyWithVideo({
 url: tes[0].link,
 filename: tes[0].output
-}).catch(e => { iky.reply('Link Invalid')
+},{reply_to_message_id: iky.message.message_id}).catch(e => { iky.reply('Link Invalid')
  console.log(e)
 })
 iky.replyWithChatAction("upload_video")
@@ -935,14 +983,14 @@ Tunggu Proses Mengirim.....
 iky.replyWithPhoto({
 url: res.all[0].image,
 filename: res.all[0].title+'.jpg'
-},{caption: thumbInfo})
+},{caption: thumbInfo,reply_to_message_id: iky.message.message_id})
 y2mateA(res.all[0].url).then((tes) => {
 console.log(tes)
 iky.replyWithChatAction("upload_audio")
 iky.replyWithAudio({
 url: tes[0].link,
 filename: tes[0].output
-}).catch(e => iky.reply('error silahkan cari lagu lain'))
+},{reply_to_message_id: iky.message.message_id}).catch(e => iky.reply('error silahkan cari lagu lain'))
 }).catch(e => iky.reply('error silahkan cari lagu lain'))
 }).catch(e => iky.reply('error silahkan cari lagu lain'))
 } catch (e) {
@@ -979,14 +1027,14 @@ var coo = 'randomHentaiGif'
 iky.replyWithPhoto({
 url: (await neko['nsfw'][coo]()).url, 
 filename: 'loli.jpg'
-},{caption: coo})
+},{caption: coo,reply_to_message_id: iky.message.message_id})
 return 
 }
 var coo = command
 iky.replyWithPhoto({
 url: (await neko['nsfw'][coo]()).url, 
 filename: 'loli.jpg'
-},{caption: coo})
+},{caption: coo,reply_to_message_id: iky.message.message_id})
 } catch {
 reply ('error')
 }
