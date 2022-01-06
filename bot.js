@@ -819,11 +819,11 @@ sendVideo(iky,url,filename,caption)
 break
 case 'asupan':
 anu = ['loli','santuy','ukhty']
-if(!anu.includes(qe.toLowerCase())) return reply(`Tidak ditemukan harap masukan dengan benar\nLIST YANG TERSEDIA:
+if(!anu.includes(qe)) return reply2(`Tidak ditemukan harap masukan dengan benar\nLIST YANG TERSEDIA:
 1. loli
 2. ukhty
 3. santuy`)
-sendsearch (iky)
+sendsearch (bot,iky)
 try {
 url = `https://api.rzkyfdlh.tech/asupan/${qe.toLowerCase()}`,
 filename = Date.now()+'.mp4'
