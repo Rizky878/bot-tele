@@ -1,5 +1,6 @@
-[{
-  "pino": {
+[
+{
+"pino": {
     "safe": true,
     "name": "platform",
     "timestamp": true,
@@ -9,28 +10,8 @@
       "res": "pino.stdSerializers.res"
     }
   },
-  "botname": "IkyyBot",
-  "ownerusername": "@Rizky9788",
-  "ownername": "Rizky Fadilah",
-  "unicode": {
-    "head": "✦",
-    "arrow": "✧",
-    "body": "┃",
-    "upper": "┏",
-    "down": "┗",
-    "line": "━",
-    "wings": [
-      "𓆩 ",
-      " 𓆪" 
-    ],
-    "needed": [
-     "<",
-     ">"
-     ],
-    "optional": [
-      "(",
-      ")"
-    ]
-  },
-  "BotToken": "TOKEN BOT" 
-}]
+"ownerusername": "Rizky9788",
+"unicode": {"head": "✦","arrow": "✧","body": "┃","upper": "┏","down": "┗","line": "━","wings": [ "𓆩 "," 𓆪" ],"needed": ["<",">"],"optional": ["(",")"]},
+"BotToken": "TOKEN BOT" 
+}
+]
