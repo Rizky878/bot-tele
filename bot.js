@@ -7,6 +7,9 @@ const speed = require(`performance-now`);
 const RA = require('ra-api')
 const chalk = require('chalk')
 const spin = require('spinnies')
+const { promisify } = require('util')
+const _gis = require('g-i-s')
+const gis = promisify(_gis)
 const cfonts = require('cfonts')
 const delay = require('delay')
 const fs = require('fs')
@@ -475,17 +478,17 @@ sendText(bot,ctx ,'/simioff <mematikan fitur simsimi>\n/simion <menghidupkan mod
 })
 bot.start(async(ctx) => {
 
-if(cekStatus(ctx.update.callback_query.from.id, ban)) return
+if(cekStatus(ctx.message.from.id, ban)) return
 sendStart(bot,ctx)
 })
 bot.help((ctx) => {
 
-if(cekStatus(ctx.update.callback_query.from.id, ban)) return
+if(cekStatus(ctx.message.from.id, ban)) return
 sendHelp(bot,ctx)
 })
 bot.action('star', async(iky) => {
 
-if(cekStatus(ctx.update.callback_query.from.id, ban)) return
+if(cekStatus(iky.update.callback_query.from.id, ban)) return
 iky.deleteMessage()
 if (iky.chat.type.includes("group")) return bot.telegram.sendMessage(iky.chat.id,`Perintah Ini hanya Bisa Digunakan Chat Pribadi!`)
 bot.telegram.sendMessage(iky.chat.id, 'Jika Ingin memakai Anonymous chat\nSilahkan ketik \n/star untuk memulai\n/next untuk mencari partner baru\n/leave untuk berhenti')
@@ -664,6 +667,15 @@ reply2('`Sukses menghapus pesan`')
 } catch {
 reply2('gagal')
 }
+break
+case 'gimage': 
+if(!qe) return reply2('Nyari apa kak?\nContoh: /gimage kuda')
+let results = await gis(args.join(" ")) || []
+let { url, width, height } = results[Math.floor(Math.random() * results.length)] || {}
+if (!url) return reply2('Gambar tidak ditemukan')
+iky.replyWithPhoto({
+url: url,
+filename: Date.now() + '.jpg' },{caption: 'sukses'})
 break
 case 'pin':
 if(!isGroup && !isAdmin ) return reply2('`Khusus Admin and group`')
