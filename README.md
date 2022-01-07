@@ -6,7 +6,7 @@
 <p align="center">
 <a href="https://github.com/Rizky878"><img title="Author" src="https://img.shields.io/badge/Author-Rizky%20Fadilah-red.svg?style=for-the-badge&logo=github"></a>
 <a href="https://github.com/Rizky878/bot-tele"><img src="https://img.shields.io/github/repo-size/Rizky878/bot-tele?style=for-the-badge&logo=github" alt="size" /></a>
-<a href="https://t.me/userbotindo"> <img src="https://img.shields.io/badge/telegram-Support_Group-blue?style=social&logo=telegram" alt="support" /></a>
+<a href="https://t.me/+cV7x1HKVr6UxNTA1"> <img src="https://img.shields.io/badge/telegram-Support_Group-blue?style=social&logo=telegram" alt="support" /></a>
 </p>
 
 
