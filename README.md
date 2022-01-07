@@ -7,6 +7,7 @@
 <a href="https://github.com/Rizky878/bot-tele"><img src="https://img.shields.io/github/repo-size/Rizky878/bot-tele?style=for-the-badge&logo=github" alt="size" /></a>
 <a href="https://github.com/Rizky878/bot-tele/watchers"> <img src="https://img.shields.io/github/watchers/Rizky878/bot-tele?logo=github&style=for-the-badge" alt="Watch" /></a><br>
 <a href="https://t.me/+cV7x1HKVr6UxNTA1"> <img src="https://img.shields.io/badge/telegram-Support_Group-blue?style=social&logo=telegram" alt="support" /></a>
+<a href="https://pypi.org/project/Telethon/"> <img src="https://img.shields.io/pypi/v/telethon?color=brightgreen&label=telethon&logo=javascript&logoColor=blue&style=for-the-badge" /></a>
 </p>
 
 
