@@ -6,8 +6,8 @@
 <a href="https://github.com/Rizky878"><img title="Author" src="https://img.shields.io/badge/Author-Rzky%20Fdlh-red.svg?style=for-the-badge&logo=github"></a>
 <a href="https://github.com/Rizky878/bot-tele"><img src="https://img.shields.io/github/repo-size/Rizky878/bot-tele?style=for-the-badge&logo=github" alt="size" /></a>
 <a href="https://github.com/Rizky878/bot-tele/watchers"> <img src="https://img.shields.io/github/watchers/Rizky878/bot-tele?logo=github&style=for-the-badge" alt="Watch" /></a><br>
+<a href="https://npmjs.com/package/telegraf"> <img src="https://img.shields.io/badge/Telegraf-4.0.2-red.svg?style=for-the-badge&logo=npm&logoColor=yellow" alt="version npm" /></a>
 <a href="https://t.me/+cV7x1HKVr6UxNTA1"> <img src="https://img.shields.io/badge/telegram-Support_Group-blue?style=social&logo=telegram" alt="support" /></a>
-<a href="https://npmjs.com/package/telegraf"> <img src="https://img.shields.io/badge/Telegraf-4.0.2-red.svg?style=for-the-badge&logo=npm&logoColor=yellow" /></a>
 </p>
 
 
