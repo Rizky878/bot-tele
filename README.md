@@ -29,7 +29,7 @@
 
 ## Install the package
 ```cmd
-> npm install
+> npm i -g
 ```
 
 ## Edit token bot
